@@ -8,6 +8,7 @@ This is an unofficial API wrapper written in Python for www.guerrillamail.com
 import asyncio
 import secrets
 import string
+import re
 from GuerrillaMail import Client
 
 async def main():
@@ -18,9 +19,12 @@ async def main():
         messages = await client.get_messages(email)
         for message in messages:
             if message.mail_from == "XXX@mail.com":
-                print(message.mail_excerpt)
+                token = re.compile(r" (\w+) ",flags=re.A).findall(message.mail_excerpt)[0]
+                print(token)
+                break
         ...
         await client.delete_email(email)
+        ...
 
 if __name__ == "__main__":
     asyncio.run(main())
